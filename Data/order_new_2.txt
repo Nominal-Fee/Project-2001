@@ -1,0 +1,3 @@
+order_id,customer_id,amount,currency
+O1009,C002,1500,CNY
+O1010,C001,400,EUR
