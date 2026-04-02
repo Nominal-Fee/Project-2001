@@ -1,20 +1,26 @@
 import pandas as pd
 import sqlite3
 import os
-
+import glob
 def main():
     # Define file paths
-    customer_file = os.path.join('data', 'customer.txt')
-    order_file = os.path.join('data', 'order.txt')
+    data_dir = 'Data'
     db_file = 'merged_database.sqlite'
 
-    # Read data files
-    print("Reading data...")
+    # Read all matching data files
+    print("Reading data files...")
     try:
-        customers = pd.read_csv(customer_file)
-        orders = pd.read_csv(order_file)
-    except FileNotFoundError as e:
-        print(f"Error reading file: {e}")
+        customer_files = glob.glob(os.path.join(data_dir, 'customer*.txt'))
+        order_files = glob.glob(os.path.join(data_dir, 'order*.txt'))
+
+        if not customer_files or not order_files:
+            print("Missing customer or order files in Data directory.")
+            return
+            
+        customers = pd.concat([pd.read_csv(f) for f in customer_files], ignore_index=True)
+        orders = pd.concat([pd.read_csv(f) for f in order_files], ignore_index=True)
+    except Exception as e:
+        print(f"Error reading files: {e}")
         return
 
     # Clean duplicate entries
