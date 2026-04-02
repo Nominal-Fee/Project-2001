@@ -3,7 +3,7 @@ name: Data Update Pipeline
 on:
   push:
     paths:
-      - 'data/**'
+      - 'Data/**'
 
 jobs:
   update-database:
