@@ -1,0 +1,29 @@
+name: Data Update Pipeline
+
+on:
+  push:
+    paths:
+      - 'data/**'
+
+jobs:
+  update-database:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas flask
+          # Note: sqlite3 is part of the Python standard library so it does not need to be pip installed, but we acknowledge it.
+
+      - name: Run clean_and_merge.py script
+        run: |
+          python clean_and_merge.py
